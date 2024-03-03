@@ -1,0 +1,8 @@
+image:
+  repository: imonbayazid/angularspringmongodocker_frontend_angular
+  tag: v1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 4200

@@ -1,0 +1,50 @@
+# templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app-db.fullname" . }}
+  labels:
+    app: {{ include "app-db.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "app-db.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "app-db.name" . }}
+    spec:
+      containers:
+        - name: mongodb
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MONGO_INITDB_ROOT_DATABASE
+              value: {{ .Values.mongodbRootDatabase }}
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongodbRootUsername }}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app-db.fullname" . }}
+                  key: mongodb-root-password
+            - name: MONGO_USERNAME
+              value: {{ .Values.mongodbUsername }}
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app-db.fullname" . }}
+                  key: mongodb-password
+            - name: MONGO_DB
+              value: {{ .Values.mongodbDatabase }}
+          ports:
+            - containerPort: 27017
+          # volumeMounts:
+          #   - name: mongodb-data
+          #     mountPath: /data/db
+      # volumes:
+      #   - name: mongodb-data
+      #     persistentVolumeClaim:
+      #       claimName: {{ include "app-db.fullname" . }}
+

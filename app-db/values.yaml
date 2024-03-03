@@ -1,0 +1,23 @@
+# values.yaml
+image:
+  repository: imonbayazid/angularspringmongodocker_database_mongodb
+  tag: v1
+  pullPolicy: IfNotPresent
+
+mongodbRootUsername: Admin
+mongodbRootPassword: QWRtaW4=
+mongodbUsername: Admin
+mongodbPassword: QWRtaW4=
+mongodbDatabase: Database
+mongodbRootDatabase: asmd_mongo_db
+
+service:
+  name: appmongodb
+  type: ClusterIP
+  port: 27017
+
+# persistence:
+#   enabled: true
+#   storageClass: gp3
+#   accessMode: ReadWriteOnce
+#   size: 1Gi
